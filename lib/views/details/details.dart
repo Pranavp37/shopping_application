@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shoppingui/controller/product_details_controller.dart';
 
-class DetailsPage extends StatelessWidget {
-  const DetailsPage(
-      {super.key,
-      required this.img,
-      required this.iteamName,
-      required this.iteamPrice});
-  final String img;
-  final String iteamName;
-  final String iteamPrice;
+class DetailsPage extends StatefulWidget {
+  const DetailsPage({super.key, required this.id});
+
+  final int id;
+
+  @override
+  State<DetailsPage> createState() => _DetailsPageState();
+}
+
+class _DetailsPageState extends State<DetailsPage> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await context
+          .read<ProductDetailsController>()
+          .getProductDetails(widget.id);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var providerDetails = context.watch<ProductDetailsController>();
     return Scaffold(
       body: SafeArea(
         maintainBottomViewPadding: false,
@@ -79,7 +93,9 @@ class DetailsPage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10),
                                 image: DecorationImage(
                                     fit: BoxFit.cover,
-                                    image: NetworkImage(img))),
+                                    image: NetworkImage(providerDetails
+                                        .productDetails!.image
+                                        .toString()))),
                           ),
                           Positioned(
                             top: 12,
@@ -105,7 +121,7 @@ class DetailsPage extends StatelessWidget {
                         height: 10,
                       ),
                       Text(
-                        iteamName,
+                        providerDetails.productDetails!.title.toString(),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
@@ -154,7 +170,8 @@ class DetailsPage extends StatelessWidget {
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.left,
-                          'The name says it all, the right size slightly snugs the body leaving enough room for comfort in the sleeves and waist.The name says it all, the right size slightly snugs the body leaving enough room for comfort in the sleeves and waist.The name says it all, the right size slightly snugs the body leaving enough room for comfort in the sleeves and waist.'),
+                          providerDetails.productDetails!.description
+                              .toString()),
                       SizedBox(
                         height: 15,
                       ),
@@ -265,7 +282,7 @@ class DetailsPage extends StatelessWidget {
                         style: TextStyle(color: Colors.black87, fontSize: 12),
                       ),
                       Text(
-                        iteamPrice,
+                        providerDetails.productDetails!.price.toString(),
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,

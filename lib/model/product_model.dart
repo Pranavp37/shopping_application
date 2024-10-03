@@ -2,17 +2,13 @@
 //
 //     final productModel = productModelFromJson(jsonString);
 
-
-
 import 'dart:convert';
 
 import 'package:shoppingui/controller/product_home_controller.dart';
 
-
 ProductHomeController obj = ProductHomeController();
 
-
-List<ProductModel> productModelFromJson({required String str}) {
+List<ProductModel> productModelFromJson(String str) {
   return List<ProductModel>.from(
       json.decode(str).map((x) => ProductModel.fromJson(x)));
 }
