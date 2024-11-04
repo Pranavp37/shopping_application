@@ -75,18 +75,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Categories(
                                         text: product.productCategories[index]
                                             .toString(),
-                                        containerClr: context
-                                                    .watch<
-                                                        ProductHomeController>()
-                                                    .selectedcat ==
-                                                index
-                                            ? Colors.black
-                                            : Colors.grey,
-                                        textClr: context
-                                                    .watch<
-                                                        ProductHomeController>()
-                                                    .selectedcat ==
-                                                index
+                                        containerClr:
+                                            product.selectedcat == index
+                                                ? Colors.black
+                                                : Colors.grey,
+                                        textClr: product.selectedcat == index
                                             ? Colors.grey
                                             : Colors.black,
                                       ),
@@ -129,6 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) => DetailsPage(
+                                                index: index,
                                                 id: product
                                                     .productData[index].id!,
                                               ),
